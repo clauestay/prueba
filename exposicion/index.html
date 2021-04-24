@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+		<link rel="stylesheet" type="text/css" href="3DArtMuseum.css">
+	</head>
+	<body>
+		<div id="pleasewait" class="fondo">
+			<!-- <table> -->
+				<!-- <tr> -->
+					<!-- <td> -->
+						<!-- <img src="3DArtMuseum.png" alt="logo"/> -->
+						<!-- <br/><br/>Visitanos en: <b>Calle de Ejemplo 123, Capital Federal, Buenos Aires</b>. -->
+						<!-- <br/><br/>&iquest;C&oacute;mo llegar? En colectivo (<b>l&iacute;neas 45, 53 y 122</b>) o Subte <b>(l&iacute;neas A, B y C)</b>. -->
+					<!-- </td> -->
+				<!-- </tr> -->
+			<!-- </table> -->
+			<div id="pleasewaitcontainer">
+				<div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+			</div>
+		</div>
+
+		<div id="buttonenter">
+
+			<div id="redes">
+				<footer id="colophon" class="site-footer" role="contentinfo">
+				<div class="social-wrapper">
+				  <ul>
+					<li>
+					  <a href="https://www.facebook.com/loretosoledadterror/" target="_blank">
+						<img src="img/FACEBOOK.png" alt="Facebook Logo" class="facebook-icon"></a>
+					</li>
+					<li>
+					  <a href="https://www.instagram.com/loretosoledadterror/" target="_blank">
+						<img src="img/INSTAGRAM.png" alt="Instagram Logo" class="instagram-icon"></a>
+					</li>
+					<li>
+					  <a href="https://www.youtube.com/channel/UCX_zNqL7Xev0UipCMQpDdLQ" target="_blank">
+						<img src="img/YOUTUBE.png" alt="Youtube Logo" class="youtube-icon"></a>
+					</li>
+					<li>
+					  <a href="https://loretosoledad.wixsite.com/fotografiadeterror" target="_blank">
+						<img src="img/WEB.png" alt="Web Logo" class="web-icon"></a>
+					</li>
+				  </ul>
+				</div>
+			  </footer>
+			</div>
+			<div id="boton">Comenzar el recorrido</div>
+		</div>
+
+		<div id="content"><div id="container"></div></div>
+
+		<div id="controls">
+			<div id="controls_minus"></div>
+			<div id="controls_plus"></div>
+		</div>
+
+		<div id="info"><div id="infotext"></div></div>
+
+		<script src="3DArtMuseumPleaseRotate.js"></script>
+		<script src="3DArtMuseum.js"></script>
+		<script>
+			drawRoom();
+
+			addToLeft(20,  200, "img/1.png", "", "");
+			addToLeft(46,  125, "img/5b.png", "", "");
+			addToLeft(20,   50, "img/2.png", "", "");
+			addToLeft(46,  -50, "img/5.png", "", "");
+			addToLeft(20, -160, "img/3.png", "", "");
+
+			addToFront(20, -320, "img/6.png", "", "");
+			addToFront(46, -250, "img/9.png", "", "");
+			addToFront(20, -170, "img/7.png", "", "");
+			addToFront(46,  -80, "img/10.png", "", "");
+			addToFront(20,    0, "img/8.png", "", "");
+
+			addToRight(47, -160, "img/9.png", "", "");
+			addToRight(50,  -50, "img/10.png", "", "");
+			addToRight(37,   50, "img/Art_13.jpg", "", "");
+			addToRight(26,  125, "img/Art_14.jpg", "", "");
+			addToRight(21,  200, "img/Art_15.jpg", "", "");
+
+			addToBack(42,    0, "img/Art_16.jpg", "", "");
+			addToBack(42,  -80, "img/Art_17.jpg", "", "");
+			addToBack(25, -170, "img/Art_18.jpg", "", "");
+			addToBack(42, -250, "img/Art_19.jpg", "", "");
+			addToBack(27, -320, "img/Art_20.jpg", "", "test");
+
+			renderRoom();
+
+			welcome("", "Bienvenido al museo virtual de arte desarrollado por Leonardo Javier Russo. Haga click o toque una obra de arte para acercarse a ella y conocer su historia.");
+		</script>
+	</body>
+</html>
+
