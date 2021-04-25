@@ -10,13 +10,23 @@ body{margin:0;padding:0;overflow:hidden;-webkit-user-select:none;-moz-user-selec
 
 #pleasewaitcontainer{position:absolute;bottom:0;width:100%;height:100px;}
 
-        position:absolute;
-        bottom: 290px;
-        width:100%;
-        height:100px;
-        z-index:801;
-        display:none;
-    }
+#buttonenter{
+    position:absolute;
+    bottom: 290px;
+    width:100%;
+    height:100px;
+    z-index:801;
+    display:none;
+}
+
+#redes{
+    position:absolute;
+    bottom: 290px;
+    width:100%;
+    height:100px;
+    z-index:801;
+    /* display:none; */
+}
 
 .fondo{
     background-image: url('Puerta1.jpg'); 
@@ -45,6 +55,24 @@ body{margin:0;padding:0;overflow:hidden;-webkit-user-select:none;-moz-user-selec
     margin-right: 1px;
 }
 
+#boton_empezar{
+    border-radius:5px;
+    padding:5px 20px 5px 25px;
+    font-size:70px;
+    text-decoration:none;
+    /* margin:20px; */
+    color:#fff;
+    position:relative;
+    display:inline-block;
+    font-family: Mathilde_Castleland;
+    text-shadow:0 0 5px #000000,0 0 5px #000000;
+    background-color: rgb(177, 1, 1);
+    box-shadow:0px 5px 0px 0px rgb(123, 0, 0);
+    cursor:pointer;
+    margin-right: 1px;
+}
+
+
 .site-footer {
       /* text-align: center; */
       margin: 10px 0;
@@ -66,11 +94,8 @@ body{margin:0;padding:0;overflow:hidden;-webkit-user-select:none;-moz-user-selec
   }
 
   .facebook-icon,
-
   .instagram-icon,
-
   .youtube-icon,
-
   .web-icon{
       margin-top: .625em;
       width: 70px;
