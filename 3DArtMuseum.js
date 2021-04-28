@@ -1170,7 +1170,7 @@ function drawRoom(){
 	camera.lookAt(scene.position);	
 
 	// ADDING FLOOR
-	var floorTexture = new THREE.ImageUtils.loadTexture("suelo3.jpg");
+	var floorTexture = new THREE.ImageUtils.loadTexture("recursos/imagenes/suelo3.jpg");
 	floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
 	floorTexture.repeat.set(15,10);
 	var floorMaterial = new THREE.MeshBasicMaterial({map: floorTexture, side: THREE.DoubleSide });
@@ -1181,7 +1181,7 @@ function drawRoom(){
 	scene.add(floor);
 
 	// ADDING CEIL
-	var ceilTexture = new THREE.ImageUtils.loadTexture("cielo.jpg");
+	var ceilTexture = new THREE.ImageUtils.loadTexture("recursos/imagenes/cielo.jpg");
 	ceilTexture.wrapS = ceilTexture.wrapT = THREE.RepeatWrapping; 
 	ceilTexture.repeat.set(42,42);
 	var ceilMaterial = new THREE.MeshBasicMaterial({map: ceilTexture, side: THREE.DoubleSide });
@@ -1192,10 +1192,10 @@ function drawRoom(){
 	scene.add(ceil);
 
 	// ADDING WALLS
-	var wallTexture = new THREE.ImageUtils.loadTexture("pared1.jpg");
+	var wallTexture = new THREE.ImageUtils.loadTexture("recursos/imagenes/pared1.jpg");
 	// var wallTexture1 = new THREE.ImageUtils.loadTexture("pared4.jpg");
-	var wallTexture2 = new THREE.ImageUtils.loadTexture("pared1.jpg");
-	var wallTexture3 = new THREE.ImageUtils.loadTexture("pared3.jpg");
+	var wallTexture2 = new THREE.ImageUtils.loadTexture("recursos/imagenes/pared1.jpg");
+	var wallTexture3 = new THREE.ImageUtils.loadTexture("recursos/imagenes/pared3.jpg");
 	var wallMaterial = new THREE.MeshBasicMaterial({map: wallTexture, side: THREE.DoubleSide });
 	var wallMaterial1 = new THREE.MeshBasicMaterial({map: wallTexture, side: THREE.DoubleSide });
 	var wallMaterial2 = new THREE.MeshBasicMaterial({map: wallTexture2, side: THREE.DoubleSide });
