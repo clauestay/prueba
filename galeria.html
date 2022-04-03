@@ -1,68 +1,115 @@
 <!DOCTYPE html>
 
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-		<link rel="stylesheet" type="text/css" href="3DArtMuseum.css">
-	</head>
-	<body>
-		<div id="pleasewait">
-			<div id="pleasewaitcontainer">
-				<div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+
+<head>
+	<meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<link rel="stylesheet" type="text/css" href="3DArtMuseum.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css" />
+	<link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+	<div id="pleasewait">
+		<div id="pleasewaitcontainer">
+			<div class="lds-spinner">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
 			</div>
 		</div>
+	</div>
 
-		<div id="buttonenter">
-		</div>
+	<div id="buttonenter">
+	</div>
 
-		<div id="content"><div id="container"></div></div>
+	<div id="content">
+		<div id="container"></div>
+	</div>
 
-		<!-- <div id="controls">
+	<!-- <div id="controls">
 			<div id="controls_minus"></div>
 			<div id="controls_plus"></div>
 		</div> -->
 
-		<div id="info"><div id="infotext"></div></div>
-		<script
-		src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
-		integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
-		crossorigin="anonymous"></script>
-		<script src="3DArtMuseumPleaseRotate.js"></script>
-		<script src="3DArtMuseum.js"></script>
-		<script>
-			$("#buttonenter").click();
-			drawRoom();
+	<div class="music-container" id="music-container">
+		<div class="music-info">
+			<h4 id="title"></h4>
+			<div class="progress-container" id="progress-container">
+				<div class="progress" id="progress"></div>
+			</div>
+		</div>
 
-			addToLeft(20,  200, "recursos/imagenes/1.png", "", "");
-			addToLeft(46,  125, "recursos/imagenes/5b.png", "", "");
-			addToLeft(20,   50, "recursos/imagenes/2.png", "", "");
-			addToLeft(46,  -50, "recursos/imagenes/5.png", "", "");
-			addToLeft(20, -160, "recursos/imagenes/3.png", "", "");
+		<audio src="music/ukulele.mp3" id="audio"></audio>
 
-			addToFront(20, -320, "recursos/imagenes/6.png", "", "");
-			addToFront(46, -250, "recursos/imagenes/9.png", "", "");
-			addToFront(20, -170, "recursos/imagenes/7.png", "", "");
-			addToFront(46,  -80, "recursos/imagenes/10.png", "", "");
-			addToFront(20,    0, "recursos/imagenes/8.png", "", "");
+		<div class="img-container">
+			<img src="images/ukulele.jpg" alt="music-cover" id="cover" />
+		</div>
+		<div class="navigation">
+			<button id="prev" class="action-btn">
+				<i class="fas fa-backward"></i>
+			</button>
+			<button id="play" class="action-btn action-btn-big">
+				<i class="fas fa-play"></i>
+			</button>
+			<button id="next" class="action-btn">
+				<i class="fas fa-forward"></i>
+			</button>
+		</div>
+	</div>
 
-			addToRight(22, -160, "recursos/imagenes/12.png", "", "");
-			addToRight(50,  -50, "recursos/imagenes/14.png", "", "");
-			addToRight(20, 	 50, "recursos/imagenes/13.png", "", "");
-			addToRight(50,  125, "recursos/imagenes/15.png", "", "");
-			addToRight(21,  200, "recursos/imagenes/11.png", "", "");
+	<div id="info">
+		<div id="infotext"></div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+		integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+	<script src="3DArtMuseumPleaseRotate.js"></script>
+	<script src="3DArtMuseum.js"></script>
+	<script src="containerMusic.js"></script>
+	<script>
+		$("#buttonenter").click();
+		drawRoom();
 
-			// addToBack(42,    0, "recursos/imagenes/Art_16.jpg", "", "");
-			// addToBack(42,  -80, "recursos/imagenes/Art_17.jpg", "", "");
-			// addToBack(25, -170, "recursos/imagenes/Art_18.jpg", "", "");
-			// addToBack(42, -250, "recursos/imagenes/Art_19.jpg", "", "");
-			// addToBack(27, -320, "recursos/imagenes/Art_20.jpg", "", "test");
+		addToLeft(20, 200, "recursos/imagenes/1.png", "", "");
+		addToLeft(46, 125, "recursos/imagenes/5b.png", "", "");
+		addToLeft(20, 50, "recursos/imagenes/2.png", "", "");
+		addToLeft(46, -50, "recursos/imagenes/5.png", "", "");
+		addToLeft(20, -160, "recursos/imagenes/3.png", "", "");
 
-			renderRoom();
-			document.getElementById("buttonenter").onclick();
+		addToFront(20, -320, "recursos/imagenes/6.png", "", "");
+		addToFront(46, -250, "recursos/imagenes/9.png", "", "");
+		addToFront(20, -170, "recursos/imagenes/7.png", "", "");
+		addToFront(46, -80, "recursos/imagenes/10.png", "", "");
+		addToFront(20, 0, "recursos/imagenes/8.png", "", "");
+
+		addToRight(22, -160, "recursos/imagenes/12.png", "", "");
+		addToRight(50, -50, "recursos/imagenes/14.png", "", "");
+		addToRight(20, 50, "recursos/imagenes/13.png", "", "");
+		addToRight(50, 125, "recursos/imagenes/15.png", "", "");
+		addToRight(21, 200, "recursos/imagenes/11.png", "", "");
+
+		// addToBack(42,    0, "recursos/imagenes/Art_16.jpg", "", "");
+		addToBack(42,  -80, "recursos/imagenes/Titulo.png", "", "");
+		// addToBack(25, -170, "recursos/imagenes/Art_18.jpg", "", "");
+		addToBack(42, -250, "recursos/imagenes/descripcion.png", "", "");
+		// addToBack(27, -320, "recursos/imagenes/Art_20.jpg", "", "test");
+
+		renderRoom();
+		document.getElementById("buttonenter").onclick();
 			// welcome("", "Bienvenido a la exposición virtual de arte de terror desarrollado por LoretoSoledad. Haga click o toque una obra de arte para acercarse a ella.");
 
-		</script>
-	</body>
-</html>
+	</script>
+</body>
 
+</html>
