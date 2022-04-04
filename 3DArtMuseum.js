@@ -23078,6 +23078,7 @@ function onDocumentTouchMove(event) {
 }
 
 function onDocumentMouseDown(event) {
+	console.log(event);
   if (document.getElementById("pleasewait").style.display == "none") {
     event.preventDefault();
     document.addEventListener("mousemove", onDocumentMouseMove, false);
@@ -23099,6 +23100,7 @@ function onDocumentMouseDown(event) {
         document.getElementById("info").style.display = "none";
 
         selectedObject = intersects[0].object;
+		console.log(selectedObject);
 
         var cameraDegrees = ((camera.rotation.y * 180) / Math.PI).toFixed(2);
         var objectDegrees = (
