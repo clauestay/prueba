@@ -12,7 +12,19 @@ const currTime = document.querySelector('#currTime');
 const durTime = document.querySelector('#durTime');
 
 // Song titles
-const songs = ['La mea tona','hey', 'summer', 'ukulele'];
+const songs = [
+	'Helicóptero',
+	'I got you',
+	'I see you', 
+	'La canción de la muerte', 
+	'La mea tona 1', 
+	'La mea tona 2',
+	'La mea tona 3',
+	'La mea tona 4',
+	'La mea tona 5',
+	'Puro terror',
+	'Terror',
+];
 
 // Keep track of song
 let songIndex = 2;
@@ -24,7 +36,7 @@ loadSong(songs[songIndex]);
 function loadSong(song) {
   title.innerText = song;
   audio.src = `music/${song}.mp3`;
-  cover.src = `images/${song}.jpg`;
+  cover.src = `images/Logo.jpg`;
 }
 
 // Play song
