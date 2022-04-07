@@ -60,8 +60,8 @@
 			<button id="prev" class="action-btn">
 				<i class="fas fa-backward"></i>
 			</button>
-			<button id="play" class="action-btn action-btn-big">
-				<i class="fas fa-play"></i>
+			<button id="play" class="action-btn action-btn-big" style="display:none;">
+				<!-- <i class="fas fa-play"></i> -->
 			</button>
 			<button id="next" class="action-btn">
 				<i class="fas fa-forward"></i>
@@ -100,7 +100,7 @@
 		// addToFront(20, 0, "recursos/imagenes/8.png", "", "");
 
 		addToRight(22, -160, "recursos/imagenes/12.png", "", "");
-		addToRight(50, -50, "recursos/imagenes/14.png", "", "");
+		addToRight(50, -50, "recursos/imagenes/14HD.png", "", "");
 		addToRight(20, 50, "recursos/imagenes/13.png", "", "");
 		addToRight(50, 125, "recursos/imagenes/15.png", "", "");
 		addToRight(21, 200, "recursos/imagenes/11.png", "", "");
@@ -119,6 +119,7 @@
 
 		renderRoom();
 		document.getElementById("buttonenter").onclick();
+		playMusic();
 
 	</script>
 </body>

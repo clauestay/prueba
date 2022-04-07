@@ -172,7 +172,7 @@ and (min-device-width : 320px)
 and (max-device-width : 480px) {
 
     .fondo{
-        background-image: url('recursos/imagenes/Puerta2.jpg'); 
+        background-image: url('recursos/imagenes/Puerta2Tiny.jpg'); 
         background-size: cover; 
         background-attachment: fixed; 
         background-repeat: no-repeat;
