@@ -23405,6 +23405,7 @@ function addToFront(a, b, c, d, e) {
   objectDescription[0] = d;
   objectDescription[1] = e;
   image3DArt.userData = objectDescription;
+  image3DArt.setPixelRatio(window.devicePixelRatio);
   scene.add(image3DArt);
   objects.push(image3DArt);
 }
