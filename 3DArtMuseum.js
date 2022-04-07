@@ -23332,6 +23332,7 @@ function drawRoom() {
 function renderRoom() {
   renderer = new THREE.WebGLRenderer({ antialias: false });
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
 
   container.appendChild(renderer.domElement);
 
@@ -23405,7 +23406,7 @@ function addToFront(a, b, c, d, e) {
   objectDescription[0] = d;
   objectDescription[1] = e;
   image3DArt.userData = objectDescription;
-  image3DArt.setPixelRatio(window.devicePixelRatio);
+  // image3DArt.setPixelRatio(window.devicePixelRatio);
   scene.add(image3DArt);
   objects.push(image3DArt);
 }
