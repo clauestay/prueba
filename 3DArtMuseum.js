@@ -23059,7 +23059,7 @@ function onDocumentMouseOut(event) {
 function onDocumentTouchStart(event) {
   if (document.getElementById("pleasewait").style.display == "none") {
     if (event.touches.length == 1) {
-      event.preventDefault();
+      // event.preventDefault();
       mouseXOnMouseDown = event.touches[0].pageX - windowHalfX;
       targetRotationOnMouseDown = targetRotation;
     }
@@ -23069,7 +23069,7 @@ function onDocumentTouchStart(event) {
 function onDocumentTouchMove(event) {
   if (document.getElementById("pleasewait").style.display == "none") {
     if (event.touches.length == 1) {
-      event.preventDefault();
+      // event.preventDefault();
       mouseX = event.touches[0].pageX - windowHalfX;
       targetRotation =
         targetRotationOnMouseDown + (mouseX - mouseXOnMouseDown) * 0.002;
@@ -23078,9 +23078,8 @@ function onDocumentTouchMove(event) {
 }
 
 function onDocumentMouseDown(event) {
-	console.log(event);
   if (document.getElementById("pleasewait").style.display == "none") {
-    event.preventDefault();
+    // event.preventDefault();
     document.addEventListener("mousemove", onDocumentMouseMove, false);
     document.addEventListener("mouseup", onDocumentMouseUp, false);
     document.addEventListener("mouseout", onDocumentMouseOut, false);
@@ -23406,7 +23405,6 @@ function addToFront(a, b, c, d, e) {
   objectDescription[0] = d;
   objectDescription[1] = e;
   image3DArt.userData = objectDescription;
-  // image3DArt.setPixelRatio(window.devicePixelRatio);
   scene.add(image3DArt);
   objects.push(image3DArt);
 }

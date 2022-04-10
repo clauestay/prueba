@@ -69,7 +69,6 @@ function playSong() {
   musicContainer.classList.add("play");
   //   playBtn.querySelector('i.fas').classList.remove('fa-play');
   //   playBtn.querySelector('i.fas').classList.add('fa-pause');
-
   audio.play();
 }
 
@@ -177,7 +176,7 @@ function DurTime(e) {
   get_sec_d(duration);
 
   // change duration DOM
-  durTime.innerHTML = min_d + ":" + sec_d;
+  //   durTime.innerHTML = min_d + ":" + sec_d;
 }
 
 function playMusic() {
