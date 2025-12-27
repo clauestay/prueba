@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+.music-container {
+  background: rgba(20, 20, 20, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 0, 0, 0.2);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(177, 1, 1, 0.2);
+  display: flex;
+  padding: 15px 25px;
+  position: fixed;
+  z-index: 1000;
+  bottom: 20px;
+  right: 20px;
+  width: auto;
+  min-width: 300px;
+  transition: all 0.5s ease;
+}
+
+.img-container {
+  position: relative;
+  width: 60px;
+}
+
+.img-container img {
+  border-radius: 50%;
+  object-fit: cover;
+  height: 60px;
+  width: 60px;
+  border: 2px solid #b10101;
+  animation: rotate 10s linear infinite;
+  animation-play-state: paused;
+}
+
+.music-container.play .img-container img {
+  animation-play-state: running;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20px;
+}
+
+.action-btn {
+  background: transparent;
+  border: 0;
+  color: #888;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 10px;
+  margin: 0 5px;
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  color: #b10101;
+  transform: scale(1.2);
+}
+
+.action-btn.action-btn-big {
+  color: #b10101;
+  font-size: 30px;
+}
+
+.action-btn:focus {
+  outline: 0;
+}
+
+.music-info {
+  background: rgba(10, 10, 10, 0.9);
+  border-radius: 10px 10px 0 0;
+  position: absolute;
+  top: 0;
+  left: 20px;
+  width: calc(100% - 40px);
+  padding: 10px 15px;
+  opacity: 0;
+  transform: translateY(0%);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  z-index: -1;
+  border: 1px solid rgba(177, 1, 1, 0.3);
+  border-bottom: none;
+}
+
+.music-container.play .music-info {
+  opacity: 1;
+  transform: translateY(-100%);
+}
+
+.music-info h4 {
+  margin: 0;
+  color: #fff;
+  font-family: 'Pirata One', cursive;
+  letter-spacing: 1px;
+  font-size: 18px;
+}
+
+.progress-container {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px 0 5px;
+  height: 4px;
+  width: 100%;
+}
+
+.progress {
+  background: linear-gradient(to right, #7b0000, #ff0000);
+  border-radius: 5px;
+  height: 100%;
+  width: 0%;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
+@media(max-width: 851px) {
+  .music-container {
+    width: auto;
+    min-width: 200px;
+    padding: 10px 15px;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .img-container {
+    width: 40px;
+  }
+
+  .img-container img {
+    height: 40px;
+    width: 40px;
+  }
+
+  .music-info h4 {
+    font-size: 14px;
+  }
+
+  .action-btn {
+    font-size: 16px;
+    padding: 5px;
+  }
+
+  .action-btn.action-btn-big {
+    font-size: 22px;
+  }
+}

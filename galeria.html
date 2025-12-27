@@ -1,48 +1,99 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
 	<meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-	<link rel="stylesheet" type="text/css" href="3DArtMuseum.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<link rel="stylesheet" type="text/css" href="css/3DArtMuseum.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css" />
-	<link rel="stylesheet" href="style.css" />
+	<link rel="stylesheet" href="css/style.css" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Montserrat:wght@400;700&display=swap"
+		rel="stylesheet">
+	<link rel="icon"
+		href="data:;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==">
 </head>
 
-<body>
-	<div id="pleasewait">
-		<div id="pleasewaitcontainer">
-			<div class="lds-spinner">
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
+<body style="background-color: #000; margin: 0; padding: 0;">
+	<!-- CAPA DE CARGA TOTALMENTE CONTROLADA -->
+	<div id="pleasewait" style="
+		display: flex !important;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: radial-gradient(circle, #1a0000 0%, #000 100%);
+		z-index: 99999;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		text-align: center;
+	">
+		<div id="pleasewaitcontainer" style="max-width: 800px;">
+			<h1
+				style="font-family: 'Cinzel Decorative', cursive; font-size: 48px; color: #fff; margin-bottom: 5px; letter-spacing: 4px; text-shadow: 0 0 15px rgba(255,0,0,0.3);">
+				Unum Diem Durantia</h1>
+			<p
+				style="font-family: 'Cinzel Decorative', serif; font-size: 20px; color: #b10101; margin-top: 0; letter-spacing: 6px; text-transform: uppercase; font-weight: 700;">
+				Loreto Soledad</p>
+
+			<div id="loading-state" style="margin-top: 50px;">
+				<div class="lds-spinner">
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+				<div
+					style="font-family: 'Montserrat', sans-serif; color: #666; margin-top: 25px; letter-spacing: 3px; font-size: 14px;">
+					CONFIGURANDO ENTORNO 3D...</div>
+			</div>
+
+			<div id="ready-state" style="display: none; margin-top: 50px;">
+				<p
+					style="font-family: 'Montserrat', sans-serif; color: #fff; font-size: 16px; margin-bottom: 25px; letter-spacing: 1px; opacity: 0.8;">
+					LA EXPOSICIÓN ESTÁ LISTA</p>
+				<a id="boton_final" style="
+					display: inline-block;
+					background: #b10101;
+					color: #fff;
+					padding: 18px 50px;
+					text-decoration: none;
+					font-family: 'Montserrat', sans-serif;
+					font-weight: 700;
+					font-size: 16px;
+					border: 2px solid #fff;
+					border-radius: 0px; /* Estilo más gótico/minimalista */
+					cursor: pointer;
+					letter-spacing: 3px;
+					transition: all 0.4s ease;
+					box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+				" onmouseover="this.style.background='#ff0000'; this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 30px rgba(255,0,0,0.3)';"
+					onmouseout="this.style.background='#b10101'; this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.5)';">
+					ENTRAR AL MUSEO
+				</a>
 			</div>
 		</div>
 	</div>
 
-	<div id="buttonenter">
-	</div>
+	<!-- Evitamos cualquier conflicto con el botón antiguo -->
+	<div id="buttonenter" style="display:none !important;"></div>
 
 	<div id="content">
 		<div id="container"></div>
 	</div>
 
-	<!-- <div id="controls">
-			<div id="controls_minus"></div>
-			<div id="controls_plus"></div>
-		</div> -->
-
+	<!-- REPRODUCTOR DE MÚSICA -->
 	<div class="music-container" id="music-container">
 		<div class="music-info">
 			<h4 id="title"></h4>
@@ -50,35 +101,30 @@
 				<div class="progress" id="progress"></div>
 			</div>
 		</div>
-
-		<audio src="music/La canción de la muerte.mp3" id="audio"></audio>
-
+		<audio src="recursos/audios/La canción de la muerte.mp3" id="audio"></audio>
 		<div class="img-container">
-			<img src="images/DiscoMezcla.png" alt="music-cover" id="cover" />
+			<img src="recursos/imagenes/DiscoMezcla.png" alt="music-cover" id="cover" />
 		</div>
 		<div class="navigation">
-			<button id="prev" class="action-btn">
-				<i class="fas fa-backward"></i>
+			<button id="prev" class="action-btn"><i class="fas fa-backward"></i></button>
+			<button id="play" class="action-btn action-btn-big">
+				<i class="fas fa-play"></i>
 			</button>
-			<button id="play" class="action-btn action-btn-big" style="display:none;">
-				<!-- <i class="fas fa-play"></i> -->
-			</button>
-			<button id="next" class="action-btn">
-				<i class="fas fa-forward"></i>
-			</button>
+			<button id="next" class="action-btn"><i class="fas fa-forward"></i></button>
 		</div>
 	</div>
 
 	<div id="info">
 		<div id="infotext"></div>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
-		integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
-	<script src="3DArtMuseumPleaseRotate.js"></script>
-	<script src="3DArtMuseum.js"></script>
-	<script src="containerMusic.js"></script>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
+	<script src="js/3DArtMuseumPleaseRotate.js"></script>
+	<script src="js/three.min.js"></script>
+	<script src="js/3DArtMuseum.js"></script>
+	<script src="js/containerMusic.js"></script>
 	<script>
-		$("#buttonenter").click();
+		// Iniciamos la galería en segundo plano
 		drawRoom();
 
 		addToLeft(20, 200, "recursos/imagenes/1.png", "", "");
@@ -87,29 +133,14 @@
 		addToLeft(46, -50, "recursos/imagenes/5.png", "", "");
 		addToLeft(20, -160, "recursos/imagenes/3.png", "", "");
 
-		// addToFront(20, -320, "recursos/imagenes/6.png", "", "");
-		// addToFront(46, -250, "recursos/imagenes/9.png", "", "");
-		// addToFront(20, -170, "recursos/imagenes/7.png", "", "");
-		// addToFront(46, -80, "recursos/imagenes/10.png", "", "");
-		// addToFront(20, 0, "recursos/imagenes/8.png", "", "");
-
-		// addToFront(20, -320, "recursos/imagenes/6.png", "", "");
 		addToFront(230, -100, "recursos/imagenes/Titulo.png", "", "");
-		// addToFront(20, -170, "recursos/imagenes/7.png", "", "");
 		addToFront(20, -250, "recursos/imagenes/descripcion.png", "", "");
-		// addToFront(20, 0, "recursos/imagenes/8.png", "", "");
 
 		addToRight(22, -160, "recursos/imagenes/12.png", "", "");
 		addToRight(50, -50, "recursos/imagenes/14.png", "", "");
 		addToRight(20, 50, "recursos/imagenes/13.png", "", "");
 		addToRight(50, 125, "recursos/imagenes/15.png", "", "");
 		addToRight(21, 200, "recursos/imagenes/11.png", "", "");
-
-		// addToBack(42,    0, "recursos/imagenes/Art_16.jpg", "", "");
-		// addToBack(82,  -120, "recursos/imagenes/Titulo.png", "", "");
-		// addToBack(25, -170, "recursos/imagenes/Art_18.jpg", "", "");
-		// addToBack(20, -250, "recursos/imagenes/descripcion.png", "", "");
-		// addToBack(27, -320, "recursos/imagenes/Art_20.jpg", "", "test");
 
 		addToBack(20, -320, "recursos/imagenes/6.png", "", "");
 		addToBack(46, -250, "recursos/imagenes/9.png", "", "");
@@ -118,9 +149,23 @@
 		addToBack(20, 0, "recursos/imagenes/8.png", "", "");
 
 		renderRoom();
-		document.getElementById("buttonenter").onclick();
-		playMusic();
 
+		// CONTROL DE TIEMPO DE CARGA (Garantiza ver la pantalla)
+		window.addEventListener('load', function () {
+			setTimeout(function () {
+				document.getElementById('loading-state').style.display = 'none';
+				document.getElementById('ready-state').style.display = 'block';
+			}, 3500); // 3.5 segundos para apreciar el diseño
+		});
+
+		document.getElementById('boton_final').onclick = function () {
+			if (typeof startGallery === 'function') {
+				startGallery();
+			} else {
+				document.getElementById("pleasewait").style.setProperty("display", "none", "important");
+				if (typeof playMusic === 'function') playMusic();
+			}
+		};
 	</script>
 </body>
 

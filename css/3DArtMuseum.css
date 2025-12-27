@@ -10,42 +10,55 @@ body {
 }
 
 #pleasewait {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 800;
-    background-color: #deeff5;
-}
-
-#pleasewait table {
-    width: 100%;
-    height: 80%;
-}
-
-#pleasewait table td {
-    font-family: Arial;
-    font-size: 20px;
-}
-
-#pleasewait img {
-    width: 70%;
+    z-index: 2000;
+    background: radial-gradient(circle at center, #1a0000 0%, #000 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
 }
 
 #pleasewaitcontainer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.loading-text {
+    font-family: 'Pirata One', cursive;
+    font-size: 36px;
+    letter-spacing: 4px;
+    color: #b10101;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(177, 1, 1, 0.5);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
 }
 
 #buttonenter {
-    position: absolute;
-    bottom: 290px;
-    width: 100%;
-    height: 100px;
-    z-index: 801;
+    position: fixed;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2001;
     display: none;
 }
 
@@ -74,7 +87,7 @@ body {
 }
 
 .fondo {
-    background: url('recursos/imagenes/Puerta1.jpg');
+    background: url('../recursos/imagenes/Puerta1.jpg');
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
@@ -196,20 +209,29 @@ body {
 }
 
 #buttonenter #boton {
-    border-radius: 5px;
-    padding: 5px 20px 5px 25px;
-    font-size: 70px;
+    border-radius: 8px;
+    padding: 16px 40px;
+    font-size: 20px;
     text-decoration: none;
-    margin: 20px;
     color: #fff;
     position: relative;
     display: inline-block;
-    font-family: Mathilde_Castleland;
-    text-shadow: 0 0 5px #000000, 0 0 5px #000000;
-    background-color: rgb(177, 1, 1);
-    box-shadow: 0px 5px 0px 0px rgb(123, 0, 0);
+    font-family: 'Montserrat', sans-serif;
+    text-shadow: none;
+    background: #b10101;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
     cursor: pointer;
-    margin-right: 1px;
+    border: 2px solid #fff;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+#buttonenter #boton:hover {
+    background: #ff0000;
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 0, 0, 0.5);
 }
 
 #boton_empezar {
@@ -295,7 +317,7 @@ body {
 
 @font-face {
     font-family: Mathilde_Castleland;
-    src: url('Mathilde\ Castleland.ttf');
+    src: url('../recursos/fonts/Mathilde Castleland.ttf');
 }
 
 #content {
@@ -317,8 +339,9 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #303030;
+    background-color: #000;
     overflow: hidden;
+    z-index: 100;
 }
 
 #controls {
@@ -413,7 +436,8 @@ body {
     width: 5px;
     height: 14px;
     border-radius: 20%;
-    background: #000000;
+    background: #b10101;
+    box-shadow: 0 0 10px #ff0000;
 }
 
 .lds-spinner div:nth-child(1) {
@@ -490,11 +514,11 @@ body {
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
 
     .fondo {
-        background-image: url('recursos/imagenes/Puerta2Tiny.jpg');
+        background-image: url('../recursos/imagenes/Puerta2Tiny.jpg');
         background-size: cover;
         background-attachment: fixed;
         background-repeat: no-repeat;
-        background-image: center;
+        background-position: center;
     }
 
     .social-wrapper {
@@ -543,11 +567,11 @@ body {
 /* Smartphones (landscape) */
 @media only screen and (min-width : 321px) {
     .fondo {
-        background-image: url('recursos/imagenes/Puerta2.jpg');
+        background-image: url('../recursos/imagenes/Puerta2.jpg');
         background-size: cover;
         background-attachment: fixed;
         background-repeat: no-repeat;
-        background-image: center;
+        background-position: center;
     }
 
     .social-wrapper {
