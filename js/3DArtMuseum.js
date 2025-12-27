@@ -231,12 +231,14 @@ function drawRoom() {
   // Paredes
   const wallTex = loader.load("recursos/imagenes/pared1.jpg");
   const wallTex3 = loader.load("recursos/imagenes/pared3.jpg");
+  // La pared frontal la ponemos en negro puro para que el logo JPG se funda perfectamente
+  const wallMatFront = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
   const wallMat = new THREE.MeshBasicMaterial({ map: wallTex, side: THREE.DoubleSide });
   const wallMat3 = new THREE.MeshBasicMaterial({ map: wallTex3, side: THREE.DoubleSide });
 
   const wallGeom = new THREE.PlaneGeometry(600, 90);
 
-  const wallFront = new THREE.Mesh(wallGeom, wallMat);
+  const wallFront = new THREE.Mesh(wallGeom, wallMatFront);
   wallFront.position.set(-150, 5, -230);
   scene.add(wallFront);
 
@@ -271,11 +273,16 @@ function renderRoom() {
 
 // --- Sistema de Arte ---
 function addArt(width, x, z, rotation, texturePath, audioPath, description) {
-  const tex = new THREE.TextureLoader().load(texturePath);
+  const tex = THREE.ImageUtils.loadTexture(texturePath);
   const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true });
   const mesh = new THREE.Mesh(new THREE.PlaneGeometry(width, 30), mat);
 
-  mesh.position.set(x, 0, z);
+  // Aseguramos que la imagen esté un poco más separada de la pared para evitar parpadeos
+  let finalZ = z;
+  if (z === -229) finalZ = -228.0; // Front wall offset
+  if (z === 269) finalZ = 268.0;   // Back wall offset
+
+  mesh.position.set(x, 0, finalZ);
   mesh.rotation.y = rotation;
   mesh.userData = [audioPath, description];
 
