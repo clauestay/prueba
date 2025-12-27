@@ -1,40 +1,68 @@
 <!DOCTYPE html>
 
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-		<link rel="stylesheet" type="text/css" href="3DArtMuseum.css">
-	</head>
-	<body class="fondo">
-		<div>
-			<div id="redes">
-				<footer class="site-footer" role="contentinfo">
-				<div class="social-wrapper">
-					<ul>
-					<li>
-						<a href="https://www.facebook.com/loretosoledadterror/" target="_blank">
-						<img src="recursos/imagenes/FACEBOOK.png" alt="Facebook Logo" class="facebook-icon"></a>
-					</li>
-					<li>
-						<a href="https://www.instagram.com/loretosoledadterror/" target="_blank">
-						<img src="recursos/imagenes/INSTAGRAM.png" alt="Instagram Logo" class="instagram-icon"></a>
-					</li>
-					<li>
-						<a href="https://www.youtube.com/channel/UCX_zNqL7Xev0UipCMQpDdLQ" target="_blank">
-						<img src="recursos/imagenes/YOUTUBE.png" alt="Youtube Logo" class="youtube-icon"></a>
-					</li>
-					<li>
-						<a href="https://loretosoledad.wixsite.com/fotografiadeterror" target="_blank">
-						<img src="recursos/imagenes/WEB.png" alt="Web Logo" class="web-icon"></a>
-					</li>
-					</ul>
-				</div>
-				<a href="galeria.html" id="boton_empezar">Comenzar el recorrido</a>
-				</footer>
-			</div>
-		</div>
-		<script src="3DArtMuseumPleaseRotate.js"></script>
-	</body>
-</html>
 
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+	<link rel="stylesheet" type="text/css" href="3DArtMuseum.css">
+	<link
+		href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Pirata+One&display=swap"
+		rel="stylesheet">
+</head>
+
+<body class="fondo">
+	<div id="spotlight"></div>
+	<div class="light-flicker"></div>
+
+	<main id="content-wrapper">
+		<div class="header-section">
+			<h1 class="main-title">Unum Diem Durantia</h1>
+			<h2 class="sub-title">Loreto Soledad</h2>
+		</div>
+
+		<div id="redes">
+			<div class="social-wrapper">
+				<ul>
+					<li>
+						<a href="https://www.facebook.com/loretosoledadterror/" target="_blank" title="Facebook">
+							<img src="recursos/imagenes/FACEBOOK.png" alt="Facebook" class="facebook-icon">
+						</a>
+					</li>
+					<li>
+						<a href="https://www.instagram.com/loretosoledadterror/" target="_blank" title="Instagram">
+							<img src="recursos/imagenes/INSTAGRAM.png" alt="Instagram" class="instagram-icon">
+						</a>
+					</li>
+					<li>
+						<a href="https://www.youtube.com/channel/UCX_zNqL7Xev0UipCMQpDdLQ" target="_blank"
+							title="YouTube">
+							<img src="recursos/imagenes/YOUTUBE.png" alt="YouTube" class="youtube-icon">
+						</a>
+					</li>
+					<li>
+						<a href="https://loretosoledad.wixsite.com/fotografiadeterror" target="_blank" title="Website">
+							<img src="recursos/imagenes/WEB.png" alt="Website" class="web-icon">
+						</a>
+					</li>
+				</ul>
+			</div>
+			<a href="galeria.html" id="boton_empezar">Comenzar el recorrido</a>
+		</div>
+	</main>
+	<script src="3DArtMuseumPleaseRotate.js"></script>
+	<script>
+		const spotlight = document.getElementById('spotlight');
+		window.addEventListener('mousemove', e => {
+			spotlight.style.background = `radial-gradient(circle at ${e.clientX}px ${e.clientY}px, transparent 10%, rgba(0,0,0,0.85) 30%)`;
+		});
+
+		// Optional: touch support
+		window.addEventListener('touchmove', e => {
+			const touch = e.touches[0];
+			spotlight.style.background = `radial-gradient(circle at ${touch.clientX}px ${touch.clientY}px, transparent 10%, rgba(0,0,0,0.85) 30%)`;
+		});
+	</script>
+</body>
+
+</html>
