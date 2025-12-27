@@ -97,14 +97,19 @@ function handleArtSelection(obj) {
   destinyRotation = (Math.round(objectDegrees) !== -180) ? selectedObject.rotation.y : (cameraDegrees < 0 ? -Math.PI : Math.PI);
 
   camPos = camera.position.clone();
-  const offset = 50;
+
+  // Ajuste dinámico del zoom: si la imagen es muy ancha (como el título),
+  // nos alejamos proporcionalmente para que se vea completa.
+  const objWidth = selectedObject.geometry.parameters.width;
+  const offset = objWidth > 100 ? (objWidth * 0.7) : 50;
+
   const rot = selectedObject.rotation.y;
 
   // Cálculo de posición objetivo basado en la rotación del cuadro
   targetPos = new THREE.Vector3(
-    selectedObject.position.x + (rot === Math.PI / 2 ? offset : rot === -Math.PI / 2 ? -offset : 0),
+    selectedObject.position.x + (Math.abs(rot - Math.PI / 2) < 0.1 ? offset : Math.abs(rot + Math.PI / 2) < 0.1 ? -offset : 0),
     camera.position.y,
-    selectedObject.position.z + (rot === 0 ? offset : rot === Math.PI ? -offset : 0)
+    selectedObject.position.z + (Math.abs(rot) < 0.1 ? offset : Math.abs(rot - Math.PI) < 0.1 ? -offset : 0)
   );
 }
 
