@@ -16,33 +16,15 @@
 
 <body style="background-color: #000; margin: 0; padding: 0;">
 	<!-- CAPA DE CARGA TOTALMENTE CONTROLADA -->
-	<div id="pleasewait" style="
-		display: flex !important;
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: radial-gradient(circle, #1a0000 0%, #000 100%);
-		z-index: 99999;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		text-align: center;
-	">
-		<div id="pleasewaitcontainer" style="max-width: 800px;">
-			<div style="margin-bottom: 20px;">
-				<img src="recursos/imagenes/Logo.jpg" alt="Logo"
-					style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid rgba(177, 1, 1, 0.5); box-shadow: 0 0 25px rgba(177, 1, 1, 0.4);">
+	<div id="pleasewait">
+		<div id="pleasewaitcontainer">
+			<div class="loading-logo-wrapper">
+				<img src="recursos/imagenes/Logo.jpg" alt="Logo" class="main-logo-loading">
 			</div>
-			<h1
-				style="font-family: 'Cinzel Decorative', cursive; font-size: 48px; color: #fff; margin-bottom: 5px; letter-spacing: 4px; text-shadow: 0 0 15px rgba(255,0,0,0.3);">
-				Unum Diem Durantia</h1>
-			<p
-				style="font-family: 'Cinzel Decorative', serif; font-size: 20px; color: #b10101; margin-top: 0; letter-spacing: 6px; text-transform: uppercase; font-weight: 700;">
-				Loreto Soledad</p>
+			<h1 class="loading-title">Unum Diem Durantia</h1>
+			<p class="loading-subtitle">Loreto Soledad</p>
 
-			<div id="loading-state" style="margin-top: 50px;">
+			<div id="loading-state">
 				<div class="lds-spinner">
 					<div></div>
 					<div></div>
@@ -57,34 +39,12 @@
 					<div></div>
 					<div></div>
 				</div>
-				<div
-					style="font-family: 'Montserrat', sans-serif; color: #666; margin-top: 25px; letter-spacing: 3px; font-size: 14px;">
-					CONFIGURANDO ENTORNO 3D...</div>
+				<div class="loading-status">CONFIGURANDO ENTORNO 3D...</div>
 			</div>
 
-			<div id="ready-state" style="display: none; margin-top: 50px;">
-				<p
-					style="font-family: 'Montserrat', sans-serif; color: #fff; font-size: 16px; margin-bottom: 25px; letter-spacing: 1px; opacity: 0.8;">
-					LA EXPOSICIÓN ESTÁ LISTA</p>
-				<a id="boton_final" style="
-					display: inline-block;
-					background: #b10101;
-					color: #fff;
-					padding: 18px 50px;
-					text-decoration: none;
-					font-family: 'Montserrat', sans-serif;
-					font-weight: 700;
-					font-size: 16px;
-					border: 2px solid #fff;
-					border-radius: 0px; /* Estilo más gótico/minimalista */
-					cursor: pointer;
-					letter-spacing: 3px;
-					transition: all 0.4s ease;
-					box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-				" onmouseover="this.style.background='#ff0000'; this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 30px rgba(255,0,0,0.3)';"
-					onmouseout="this.style.background='#b10101'; this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.5)';">
-					ENTRAR AL MUSEO
-				</a>
+			<div id="ready-state" style="display: none;">
+				<p class="ready-text">LA EXPOSICIÓN ESTÁ LISTA</p>
+				<a id="boton_final" class="enter-button-museum">ENTRAR AL MUSEO</a>
 			</div>
 		</div>
 	</div>
@@ -127,47 +87,62 @@
 	<script src="js/3DArtMuseum.js"></script>
 	<script src="js/containerMusic.js"></script>
 	<script>
-		// Iniciamos la galería en segundo plano
-		drawRoom();
+		// --- SISTEMA DE CARGA ROBUSTO ---
+		var loadingFired = false;
+		function showReady() {
+			if (loadingFired) return;
+			loadingFired = true;
+			console.log("Sistema listo.");
+			document.getElementById('loading-state').style.display = 'none';
+			document.getElementById('ready-state').style.display = 'block';
+		}
 
-		addToLeft(20, 200, "recursos/imagenes/1.png", "", "");
-		addToLeft(46, 125, "recursos/imagenes/5b.png", "", "");
-		addToLeft(20, 50, "recursos/imagenes/2.png", "", "");
-		addToLeft(46, -50, "recursos/imagenes/5.png", "", "");
-		addToLeft(20, -160, "recursos/imagenes/3.png", "", "");
+		// Failsafe: Siempre mostrar el botón tras 5 segundos máximo
+		setTimeout(showReady, 5000);
 
-		addToFront(230, -160, "recursos/imagenes/Titulo.png", "", "");
-		addToFront(20, -315, "recursos/imagenes/descripcion.png", "", "");
-		addToFront(40, 5, "recursos/imagenes/Logo.jpg", "", "");
-
-		addToRight(22, -160, "recursos/imagenes/12.png", "", "");
-		addToRight(50, -50, "recursos/imagenes/14.png", "", "");
-		addToRight(20, 50, "recursos/imagenes/13.png", "", "");
-		addToRight(50, 125, "recursos/imagenes/15.png", "", "");
-		addToRight(21, 200, "recursos/imagenes/11.png", "", "");
-
-		addToBack(20, -320, "recursos/imagenes/6.png", "", "");
-		addToBack(46, -250, "recursos/imagenes/9.png", "", "");
-		addToBack(20, -170, "recursos/imagenes/7.png", "", "");
-		addToBack(46, -80, "recursos/imagenes/10.png", "", "");
-		addToBack(20, 0, "recursos/imagenes/8.png", "", "");
-
-		renderRoom();
-
-		// CONTROL DE TIEMPO DE CARGA (Garantiza ver la pantalla)
+		// Disparar cuando carguen los recursos pesados
 		window.addEventListener('load', function () {
-			setTimeout(function () {
-				document.getElementById('loading-state').style.display = 'none';
-				document.getElementById('ready-state').style.display = 'block';
-			}, 3500); // 3.5 segundos para apreciar el diseño
+			setTimeout(showReady, 1000);
 		});
+
+		// --- INICIALIZACIÓN DEL MUSEO ---
+		try {
+			drawRoom();
+
+			addToLeft(20, 200, "recursos/imagenes/1.png", "", "");
+			addToLeft(46, 125, "recursos/imagenes/5b.png", "", "");
+			addToLeft(20, 50, "recursos/imagenes/2.png", "", "");
+			addToLeft(46, -50, "recursos/imagenes/5.png", "", "");
+			addToLeft(20, -160, "recursos/imagenes/3.png", "", "");
+
+			addToFront(230, -160, "recursos/imagenes/Titulo.png", "", "");
+			addToFront(20, -315, "recursos/imagenes/descripcion.png", "", "");
+			addToFront(40, 5, "recursos/imagenes/Logo.jpg", "", "");
+
+			addToRight(22, -160, "recursos/imagenes/12.png", "", "");
+			addToRight(50, -50, "recursos/imagenes/14.png", "", "");
+			addToRight(20, 50, "recursos/imagenes/13.png", "", "");
+			addToRight(50, 125, "recursos/imagenes/15.png", "", "");
+			addToRight(21, 200, "recursos/imagenes/11.png", "", "");
+
+			addToBack(20, -320, "recursos/imagenes/6.png", "", "");
+			addToBack(46, -250, "recursos/imagenes/9.png", "", "");
+			addToBack(20, -170, "recursos/imagenes/7.png", "", "");
+			addToBack(46, -80, "recursos/imagenes/10.png", "", "");
+			addToBack(20, 0, "recursos/imagenes/8.png", "", "");
+
+			renderRoom();
+		} catch (e) {
+			console.error("Error cargando el museo:", e);
+			showReady(); // Mostrar botón incluso si falla el 3D
+		}
 
 		document.getElementById('boton_final').onclick = function () {
 			if (typeof startGallery === 'function') {
 				startGallery();
 			} else {
+				// Fallback manual si startGallery no existe por alguna razón
 				document.getElementById("pleasewait").style.setProperty("display", "none", "important");
-				if (typeof playMusic === 'function') playMusic();
 			}
 		};
 	</script>

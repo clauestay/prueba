@@ -9,20 +9,20 @@ var init = false;
 
 var options = {
   startOnPageLoad: false,
-  onHide: function () {},
-  onShow: function () {},
+  onHide: function () { },
+  onShow: function () { },
   forcePortrait: false,
   message: "POR FAVOR, ROTE SU DISPOSITIVO (ACTIVE LA ROTACIÓN AUTOMATICA).",
   subMessage: "",
   allowClickBypass: false,
   onlyMobile: true,
-  zIndex: 1000,
+  zIndex: 100000,
   iconNode: null,
 };
 
 var cssRules = [
   "#pleaserotate-graphic { margin-left: 0px; width: 300px; animation: pleaserotateframes ease 2s; animation-iteration-count: infinite; transform-origin: 50% 50%; -webkit-animation: pleaserotateframes ease 2s; -webkit-animation-iteration-count: infinite; -webkit-transform-origin: 50% 50%; -moz-animation: pleaserotateframes ease 2s; -moz-animation-iteration-count: infinite; -moz-transform-origin: 50% 50%; -ms-animation: pleaserotateframes ease 2s; -ms-animation-iteration-count: infinite; -ms-transform-origin: 50% 50%; }",
-  "#pleaserotate-backdrop { background-color: white; top: 0; left: 0; position: fixed; width: 100%; height: 100%; }",
+  "#pleaserotate-backdrop { background-color: black; top: 0; left: 0; position: fixed; width: 100%; height: 100%; color: white; }",
   "#pleaserotate-container { width: 300px; position: absolute; top: 50%; left: 50%; margin-right: -50%; transform: translate(-50%, -50%); -webkit-transform: translate(-50%, -50%); }",
   "#pleaserotate-message { margin-top: 20px; font-size: 1.5em; text-align: center; font-family: Verdana, Geneva, sans-serif; text-transform: uppercase }",
   "#pleaserotate-message small { opacity: .5; display: block; font-size: .6em}",
@@ -42,7 +42,7 @@ function setBodyClass(e) {
         /(?:^|\s)pleaserotate-\S*/g,
         ""
       )),
-    (document.documentElement.className += " pleaserotate-" + e));
+      (document.documentElement.className += " pleaserotate-" + e));
 }
 function addRules(e) {
   var t;
@@ -52,22 +52,22 @@ function addRules(e) {
       "#pleaserotate-backdrop { z-index: " + options.zIndex + "}",
       0
     ),
-      options.allowClickBypass &&
-        e.insertRule("#pleaserotate-backdrop { cursor: pointer }", 0),
-      options.forcePortrait &&
-        e.insertRule(
-          "#pleaserotate-backdrop { -webkit-transform-origin: 50% }",
-          0
-        ),
-      t = 0;
+    options.allowClickBypass &&
+    e.insertRule("#pleaserotate-backdrop { cursor: pointer }", 0),
+    options.forcePortrait &&
+    e.insertRule(
+      "#pleaserotate-backdrop { -webkit-transform-origin: 50% }",
+      0
+    ),
+    t = 0;
     t < cssKeyframeRules.length;
     t++
   )
     CSSRule.WEBKIT_KEYFRAMES_RULE
       ? e.insertRule("@-webkit-keyframes " + cssKeyframeRules[t], 0)
       : CSSRule.MOZ_KEYFRAMES_RULE
-      ? e.insertRule("@-moz-keyframes " + cssKeyframeRules[t], 0)
-      : CSSRule.KEYFRAMES_RULE &&
+        ? e.insertRule("@-moz-keyframes " + cssKeyframeRules[t], 0)
+        : CSSRule.KEYFRAMES_RULE &&
         e.insertRule("@keyframes " + cssKeyframeRules[t], 0);
 }
 function createStyleSheet() {
@@ -137,9 +137,9 @@ function isPortrait() {
 function checkOrientationChange() {
   isMobile || !options.onlyMobile
     ? currentOrientation !== isPortrait() &&
-      ((currentOrientation = isPortrait()), orientationChanged())
+    ((currentOrientation = isPortrait()), orientationChanged())
     : init ||
-      ((init = !0),
+    ((init = !0),
       setVisibility(!1),
       setBodyClass("hiding"),
       options.onHide());
@@ -152,14 +152,14 @@ function checkOrientationChange() {
       checkOrientationChange(),
       window.addEventListener("resize", checkOrientationChange, !1),
       options.allowClickBypass &&
-        document
-          .getElementById("pleaserotate-backdrop")
-          .addEventListener("click", function () {
-            var e = options.onHide();
-            setBodyClass("hiding"),
-              (PleaseRotate.Showing = !1),
-              (void 0 === e || e) && setVisibility(!1);
-          }))
+      document
+        .getElementById("pleaserotate-backdrop")
+        .addEventListener("click", function () {
+          var e = options.onHide();
+          setBodyClass("hiding"),
+            (PleaseRotate.Showing = !1),
+            (void 0 === e || e) && setVisibility(!1);
+        }))
     : window.addEventListener("load", PleaseRotate.start.bind(null, e), !1);
 }),
   (PleaseRotate.stop = function () {
@@ -168,12 +168,12 @@ function checkOrientationChange() {
   (PleaseRotate.onShow = function (e) {
     (options.onShow = e),
       init &&
-        ((init = !1), (currentOrientation = null), checkOrientationChange());
+      ((init = !1), (currentOrientation = null), checkOrientationChange());
   }),
   (PleaseRotate.onHide = function (e) {
     (options.onHide = e),
       init &&
-        ((currentOrientation = null), (init = !1), checkOrientationChange());
+      ((currentOrientation = null), (init = !1), checkOrientationChange());
   }),
   (PleaseRotate.Showing = !1),
   "function" == typeof define && define.amd
@@ -182,10 +182,10 @@ function checkOrientationChange() {
         return PleaseRotate;
       }))
     : "object" == typeof exports
-    ? (setBodyClass("initialized"), (module.exports = PleaseRotate))
-    : (setBodyClass("initialized"),
-      (window.PleaseRotate = PleaseRotate),
-      overrideOptions(window.PleaseRotateOptions),
-      options.startOnPageLoad && PleaseRotate.start());
+      ? (setBodyClass("initialized"), (module.exports = PleaseRotate))
+      : (setBodyClass("initialized"),
+        (window.PleaseRotate = PleaseRotate),
+        overrideOptions(window.PleaseRotateOptions),
+        options.startOnPageLoad && PleaseRotate.start());
 
 PleaseRotate.start();
