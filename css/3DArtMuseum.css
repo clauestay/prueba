@@ -599,33 +599,63 @@ body {
     margin-right: 5px;
     background-repeat: no-repeat;
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+IHGxA4BK60xzUAAAKASURBVFjD7Zc7aFRREIb/c7PRlfhAIVHjC0VQkUAKjQYLybqVIhZa2ViksxETLaysBNFKLZQEBSWgoCBqYYyghaABRSTaGCG+0Do+wDUx+Wzm4nDdbDa7N9pkYJnZf+bcmXPPPM6VZmiaCNgGbPlfzpv4Q31Ac9oOtgJtJfRLgPcuiBGgEwhpOD/oHryuhF0dcAz44ewvAFFazgHyZaxZC7x2a86l5fyvAIAM8AAYAHIOrweeuXX703BeLICVCX0PkDXdfGDI8C9AQ7XOix4BsA/45GyuAzWm2+HwrmqdT5gDwFzgtrM77XSXDRsFGgREwHngReI3wOSUdw/OAe3ALPtfC/Sa3S9glSvhmDoEbKJyyruSi8vtVXy+QCPw1fAzhgXgjWG9kaRsCr1pRNJ9kzdKuipJIYTPkq4ZfgAIIQQk3TWsJUqjM4YQRiXtkXTCoBzQYvIt4wskNZr8zvjCKK32bDs7KYl4d8aHnNl64x9iIEp7Djk5KoLVGB9PPQAbNIckxQPnqfHVzmzQ+LIYyKS4+x5JcYt9JKnf5N3GC5I+mrzc+LCAzSmU4WygYNggsNSN5WHf+awM4x5zLyPpuUXfmthRlHh9pRLwJ7BX0hpJ3SGEgrXfbsv+cUmnzLxZUpPJfZOd69EKW/Ec4IazO+t0Xa4VLy4nuY5McRjtBN46mztAxnTbHX5pKhneWeY4XpHQ3wTqTDfPjePvcZ5UG0QygFrgifX6XQ5fBPS7de2V1npHGUcQ/OXT3spLt+ZiVZfTRBAbSthlgcPAN2d/Jc6Hartem3/FRfT1buQCjAHH45vRv/gwaXbOHwOtE/aQaQogSMpLGpP00CblDBWl3zD3hBVJlgzgAAAAAElFTkSuQmCC");
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+IHGxA4BK60xzUAAAKASURBVFjD7Zc7aFRREIb/c7PRlfhAIVHjC0VQkUAKjQYLybqVIhZa2ViksxETLaysBNFKLZQEBSWgoCBqYYyghaABRSTaGCG+0Do+wDUx+Wzm4nDdbDa7N9pkYJnZf+bcmXPPPM6VZmiaCNgGbPlfzpv4Q31Ac9oOtgJtJfRLgPcuiBGgEwhpOD/oHryuhF0dcAz44ewvAFFazgHyZaxZC7x2a86l5fyvAIAM8AAYAHIOrweeuXX703BeLICVCX0PkDXdfGDI8C9AQ7XOix4BsA/45GyuAzWm2+HwrmqdT5gDwFzgtrM77XSXDRsFGgREwHngReI3wOSUdw/OAe3ALPtfC/Sa3S9glSvhmDoEbKJyyruSi8vtVXy+QCPw1fAzhgXgjWG9kaRsCr1pRNJ9kzdKuipJIYTPkq4ZfgAIIQQk3TWsJUqjM4YQRiXtkXTCoBzQYvIt4wskNZr8zvjCKK32bDs7KYl4d8aHnNl64x9iIEp7Djk5KoLVGB9PPQAbNIckxQPnqfHVzmzQ+LIYyKS4+x5JcYt9JKnf5N3GC5I+mrzc+LCAzSmU4WygYNggsNSN5WHf+awM4x5zLyPpuUXfmthRlHh9pRLwJ7BX0hpJ3SGEgrXfbsv+cUmnzLxZUpPJfZOd69EKW/Ec4IazO+t0Xa4VLy4nuY5McRjtBN46mztAxnTbHX5pKhneWeY4XpHQ3wTqTDfPjePvcZ5UG0QygFrgifX6XQ5fBPS7de2V1npHGUcQ/OXT3spLt+ZiVZfTRBAbSthlgcPAN2d/Jc6Hartem3/FRfT1buQCjAHH45vRv/gwaXbOHwOtE/aQaQogSMpLGpP00CblDBWl3zD3hBVJlgzgAAAAAASUVORK5CYII=");
 }
 
 #info {
     position: absolute;
     left: 20px;
-    right: 420px;
-    /* Espacio para el reproductor en escritorio */
-    bottom: 20px;
+    right: 400px;
+    /* Recuperado un poco de espacio hacia la derecha */
+    bottom: 25px;
     display: none;
     z-index: 800;
 }
 
 #infotext {
     margin: 0;
-    padding: 20px 35px;
-    background: rgba(0, 0, 0, 0.75);
-    border-radius: 20px;
+    padding: 25px 35px;
+    background: rgba(45, 25, 15, 0.85);
+    border-radius: 15px;
     border: 1px solid rgba(177, 1, 1, 0.3);
     backdrop-filter: blur(12px);
     z-index: 701;
     font-family: Mathilde_Castleland !important;
-    font-size: clamp(32px, 6vh, 65px) !important;
+    font-size: clamp(32px, 5vh, 60px) !important;
+    text-transform: none !important;
     color: white;
     text-align: left;
-    line-height: 1.1;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    line-height: 1.6;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* ------- BOTÓN VR EXPERIMENTAL ------- */
+.vr-experimental-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    z-index: 1000;
+    background: rgba(10, 5, 5, 0.85);
+    border: 1px solid rgba(177, 1, 1, 0.5);
+    color: white;
+    text-decoration: none;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.vr-experimental-btn:hover {
+    background: rgba(177, 1, 1, 0.8);
+    transform: scale(1.05);
+    cursor: pointer;
 }
 
 #about {
@@ -869,4 +899,5 @@ body {
         .sub-title {
             font-size: 25px !important;
         }
-    }}
+    }
+}

@@ -81,13 +81,18 @@
 		<div id="infotext"></div>
 	</div>
 
+	<!-- BOTÓN EXPERIMENTAL DE PORTAL A REALIDAD VIRTUAL -->
+	<a href="galeria_vr.html" class="vr-experimental-btn" title="Entrar con gafas Pico 4 / Meta Quest">
+		<i class="fas fa-vr-cardboard"></i> MODO VR ESTRICTO
+	</a>
+
 	<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
 	<script src="js/3DArtMuseumPleaseRotate.js"></script>
 	<script src="js/three.min.js"></script>
 	<script src="js/3DArtMuseum.js"></script>
 	<script src="js/containerMusic.js"></script>
 	<script>
-		// --- SISTEMA DE CARGA ROBUSTO ---
+		// --- SISTEMA DE CARGA ROBUSTO (Three.js Manager) ---
 		var loadingFired = false;
 		function showReady() {
 			if (loadingFired) return;
@@ -97,13 +102,21 @@
 			document.getElementById('ready-state').style.display = 'block';
 		}
 
-		// Failsafe: Siempre mostrar el botón tras 5 segundos máximo
-		setTimeout(showReady, 5000);
+		// Conectar con el motor de carga de Three.js
+		THREE.DefaultLoadingManager.onLoad = function () {
+			setTimeout(showReady, 300); // Pequeño delay de gracia
+		};
+		THREE.DefaultLoadingManager.onProgress = function (url, itemsLoaded, itemsTotal) {
+			const statusElem = document.querySelector('.loading-status');
+			if (statusElem) statusElem.innerText = "CARGANDO ARTE Y TEXTURAS: " + itemsLoaded + " / " + itemsTotal;
+		};
+		THREE.DefaultLoadingManager.onError = function (url) {
+			console.warn("Problema cargando: " + url);
+			showReady();
+		};
 
-		// Disparar cuando carguen los recursos pesados
-		window.addEventListener('load', function () {
-			setTimeout(showReady, 1000);
-		});
+		// Failsafe en caso de conexión inestable muy lenta
+		setTimeout(showReady, 15000);
 
 		// --- INICIALIZACIÓN DEL MUSEO ---
 		try {

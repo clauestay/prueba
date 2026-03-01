@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>VR Experimental - Unum Diem Durantia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/jpeg" href="recursos/imagenes/Logo.jpg">
+    <style>
+        body {
+            margin: 0;
+            background-color: #000;
+            overflow: hidden;
+            font-family: 'Cinzel Decorative', serif;
+        }
+
+        #info-vr {
+            position: absolute;
+            top: 30px;
+            width: 100%;
+            text-align: center;
+            color: #999;
+            z-index: 100;
+            pointer-events: none;
+            font-size: 1.2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        #loading-vr {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 2rem;
+            transform: translateY(-50%);
+        }
+    </style>
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+
+<body>
+    <div id="info-vr">MODO REALIDAD VIRTUAL<br />Usa los Joysticks de tus mandos Pico 4 para caminar</div>
+    <div id="loading-vr">Iniciando Motor Inmersivo...</div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { VRButton } from 'three/addons/webxr/VRButton.js';
+        import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFactory.js';
+
+        let camera, scene, renderer, roomGroup;
+        let controller1, controller2;
+        let container;
+
+        // Contenedor para la cámara (permite mover al jugador por la habitación)
+        let playerGroup = new THREE.Group();
+
+        init();
+
+        function init() {
+            container = document.createElement('div');
+            document.body.appendChild(container);
+
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x000000);
+
+            const fogConfig = new THREE.Fog(0x000000, 2, 30); // Niebla lineal escalada para VR
+            scene.fog = fogConfig;
+
+            camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+            playerGroup.add(camera);
+            // Posición inicial: Centro del pasillo, a la altura del piso
+            playerGroup.position.set(0, 0, 7);
+            scene.add(playerGroup);
+
+            roomGroup = new THREE.Group();
+            // ESCALA VR: 1 unidad original de Three.js = 5 centimetros en la vida real.
+            // Así los techos se sienten altos, pero la habitación es transitable.
+            roomGroup.scale.set(0.05, 0.05, 0.05);
+            // Desplazar la habitación completa para que el piso original (y=-40) quede en nuestros pies (y=0 real)
+            roomGroup.position.y = 2.0;
+            scene.add(roomGroup);
+
+            // Iluminación Atmosférica
+            const ambient = new THREE.AmbientLight(0xffffff, 1.0);
+            roomGroup.add(ambient);
+
+            const centerLight = new THREE.PointLight(0x5555bb, 0.6, 500);
+            centerLight.position.set(-150, 40, 20);
+            roomGroup.add(centerLight);
+
+            // Función recursiva en el render para simular el fallo eléctrico
+            setInterval(() => {
+                centerLight.intensity = 0.6 + (Math.sin(Date.now() * 0.005) * 0.04) + (Math.random() * 0.02);
+            }, 50);
+
+            const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.4);
+            roomGroup.add(hemiLight);
+
+            buildRoom();
+            loadArt();
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.xr.enabled = true; // ACTIVAR EL MOTOR META QUEST / PICO
+            container.appendChild(renderer.domElement);
+
+            document.body.appendChild(VRButton.createButton(renderer));
+            document.getElementById('loading-vr').style.display = 'none';
+
+            // Controladores y Manos Virtuales
+            controller1 = renderer.xr.getController(0);
+            playerGroup.add(controller1);
+            controller2 = renderer.xr.getController(1);
+            playerGroup.add(controller2);
+
+            const controllerModelFactory = new XRControllerModelFactory();
+            const controllerGrip1 = renderer.xr.getControllerGrip(0);
+            controllerGrip1.add(controllerModelFactory.createControllerModel(controllerGrip1));
+            playerGroup.add(controllerGrip1);
+
+            const controllerGrip2 = renderer.xr.getControllerGrip(1);
+            controllerGrip2.add(controllerModelFactory.createControllerModel(controllerGrip2));
+            playerGroup.add(controllerGrip2);
+
+            // Arrancar Audio Ambiental Repetitivo (sin botones)
+            const listener = new THREE.AudioListener();
+            camera.add(listener);
+            const sound = new THREE.Audio(listener);
+            const audioLoader = new THREE.AudioLoader();
+            audioLoader.load('recursos/audios/La canción de la muerte.mp3', function (buffer) {
+                sound.setBuffer(buffer);
+                sound.setLoop(true);
+                sound.setVolume(0.5);
+            });
+            // El navegador bloqueará el audio hasta que entre a VR, en cuanto pulse VRButton, arranca:
+            renderer.xr.addEventListener('sessionstart', () => { sound.play(); });
+            renderer.xr.addEventListener('sessionend', () => { sound.pause(); });
+
+            window.addEventListener('resize', onWindowResize);
+            renderer.setAnimationLoop(animate);
+        }
+
+        function buildRoom() {
+            const textureLoader = new THREE.TextureLoader();
+
+            // Suelo
+            const floorTex = textureLoader.load("recursos/imagenes/suelo3.jpg");
+            floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
+            floorTex.repeat.set(15, 10);
+            const floorMat = new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.8 });
+            const floor = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), floorMat);
+            floor.position.y = -40;
+            floor.rotation.x = -Math.PI / 2;
+            roomGroup.add(floor);
+
+            // Techo
+            const ceilTex = textureLoader.load("recursos/imagenes/cielo.jpg");
+            ceilTex.wrapS = ceilTex.wrapT = THREE.RepeatWrapping;
+            ceilTex.repeat.set(40, 40);
+            const ceilMat = new THREE.MeshStandardMaterial({ map: ceilTex, roughness: 0.9 });
+            const ceil = new THREE.Mesh(new THREE.PlaneGeometry(1050, 1000), ceilMat);
+            ceil.position.y = 47;
+            ceil.rotation.x = Math.PI / 2;
+            roomGroup.add(ceil);
+
+            // Paredes traseras (negro absoluto para que la niebla haga el resto)
+            const wallMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+            const frontWall = new THREE.Mesh(new THREE.PlaneGeometry(600, 100), wallMat);
+            frontWall.position.set(0, 0, -500);
+            roomGroup.add(frontWall);
+        }
+
+        function loadArt() {
+            // Coordenadas copiadas idénticas de tu versión de escritorio para mantener tu diseño
+            // Pared Izquierda
+            addPainting(20, -150, 200, Math.PI / 2, "recursos/imagenes/1.png");
+            addPainting(46, -150, 125, Math.PI / 2, "recursos/imagenes/5b.png");
+            addPainting(20, -150, 50, Math.PI / 2, "recursos/imagenes/2.png");
+            addPainting(46, -150, -50, Math.PI / 2, "recursos/imagenes/5.png");
+            addPainting(20, -150, -160, Math.PI / 2, "recursos/imagenes/3.png");
+
+            // Pared Frontal Lejana (Letreros)
+            addPainting(230, -160, -400, 0, "recursos/imagenes/Titulo.png", true); // Textos transparentes
+            addPainting(20, -315, -400, 0, "recursos/imagenes/descripcion.png", true);
+            addPainting(40, 5, -400, 0, "recursos/imagenes/Logo.jpg", true);
+
+            // Pared Derecha
+            addPainting(22, 150, -160, -Math.PI / 2, "recursos/imagenes/12.png");
+            addPainting(50, 150, -50, -Math.PI / 2, "recursos/imagenes/14.png");
+            addPainting(20, 150, 50, -Math.PI / 2, "recursos/imagenes/13.png");
+            addPainting(50, 150, 125, -Math.PI / 2, "recursos/imagenes/15.png");
+            addPainting(21, 150, 200, -Math.PI / 2, "recursos/imagenes/11.png");
+
+            // Pared Trasera
+            addPainting(20, -320, 300, Math.PI, "recursos/imagenes/6.png");
+            addPainting(46, -250, 300, Math.PI, "recursos/imagenes/9.png");
+            addPainting(20, -170, 300, Math.PI, "recursos/imagenes/7.png");
+            addPainting(46, -80, 300, Math.PI, "recursos/imagenes/10.png");
+            addPainting(20, 0, 300, Math.PI, "recursos/imagenes/8.png");
+        }
+
+        function addPainting(width, x, z, rotation, texPath, isFlat = false) {
+            const tex = new THREE.TextureLoader().load(texPath);
+            const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.DoubleSide });
+
+            const mesh = new THREE.Mesh(new THREE.PlaneGeometry(width, 30), mat);
+            mesh.position.set(x, 0, z);
+            mesh.rotation.y = rotation;
+            roomGroup.add(mesh);
+
+            // Spotlight igual al del museo clásico (afecta las paredes virtuales que crea la oscuridad)
+            if (!isFlat) {
+                const dirX = Math.sin(rotation);
+                const dirZ = Math.cos(rotation);
+                const spotLight = new THREE.SpotLight(0xfff5e6, 1.2);
+                spotLight.position.set(x + dirX * 40, 25, z + dirZ * 40);
+                spotLight.target = mesh;
+                spotLight.angle = Math.PI / 4;
+                spotLight.penumbra = 0.8;
+                spotLight.distance = 180;
+                roomGroup.add(spotLight);
+            }
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            movePlayer();
+            renderer.render(scene, camera);
+        }
+
+        // LÓGICA DE MOVIMIENTO VR (JOYSTICKS PICO 4 / QUEST)
+        function movePlayer() {
+            const session = renderer.xr.getSession();
+            if (session) {
+                for (const source of session.inputSources) {
+                    if (source && source.gamepad) {
+                        const axes = source.gamepad.axes;
+                        // WebXR standard axes: [0,1] left thumbstick, [2,3] right thumbstick (some visors map it directly into the first 4 axes of a combined gamepad array)
+                        // Pico 4 mapped directly to axis 2 (x) and 3 (y)
+                        if (axes.length >= 4) {
+                            const xInfo = axes[2];
+                            const zInfo = axes[3];
+
+                            const speed = 0.05; // Velocidad de caminata real en metros
+
+                            if (Math.abs(zInfo) > 0.1) {
+                                // Mover adelante/atrás respecto a donde mira la cabeza
+                                const direction = new THREE.Vector3(0, 0, -1);
+                                direction.applyQuaternion(camera.quaternion);
+                                direction.y = 0; // mantener jugador en el suelo
+                                direction.normalize();
+                                playerGroup.position.addScaledVector(direction, zInfo * speed);
+                            }
+                            if (Math.abs(xInfo) > 0.1) {
+                                // Mover izq/der (Strafe) respecto a donde mira la cabeza
+                                const direction = new THREE.Vector3(1, 0, 0);
+                                direction.applyQuaternion(camera.quaternion);
+                                direction.y = 0;
+                                direction.normalize();
+                                playerGroup.position.addScaledVector(direction, xInfo * speed);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

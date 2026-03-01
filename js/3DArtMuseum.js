@@ -1,5 +1,6 @@
 // --- Variables de Estado del Museo ---
 let container, light, camera, scene, renderer, raycaster, mouse;
+let centerLight; // Luz central para efectos
 let objects = [];
 let selectedObject, objectDescription;
 let voiceGuide;
@@ -145,6 +146,12 @@ function onDocumentTouchMove(event) {
 function animate() {
   requestAnimationFrame(animate);
 
+  // Efecto de parpadeo macabro (foco en mal estado) en la luz principal
+  if (centerLight) {
+    const time = Date.now() * 0.005;
+    centerLight.intensity = 0.6 + (Math.sin(time) * 0.04) + (Math.random() * 0.02);
+  }
+
   if (camPos == null) {
     // Rotación libre
     const [currRot, targetRot] = unwrap([camera.rotation.y, targetRotation], Math.PI * 2);
@@ -154,9 +161,9 @@ function animate() {
       if (Math.abs(camera.rotation.y) > Math.PI * 2) camera.rotation.y %= Math.PI * 2;
     }
   } else {
-    // Movimiento hacia cuadro
-    camera.position.lerp(targetPos, 0.04);
-    camera.rotation.y = lerp(camera.rotation.y, destinyRotation, 0.04);
+    // Movimiento hacia cuadro (Acelerado a 0.06 para mejor respuesta)
+    camera.position.lerp(targetPos, 0.06);
+    camera.rotation.y = lerp(camera.rotation.y, destinyRotation, 0.06);
 
     if (camera.position.distanceTo(targetPos) < 0.1 && Math.abs(camera.rotation.y - destinyRotation) < 0.01) {
       finishMovement();
@@ -206,15 +213,36 @@ function drawRoom() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x000000);
 
-  const ambient = new THREE.HemisphereLight(0xffffff, 0x222222, 1);
+  // Agregar niebla (Fog) Lineal: Deja el frente 100% nítido y esconde sólo lo que está más lejos de 250 bloques
+  scene.fog = new THREE.Fog(0x000000, 200, 600);
+
+  // Luz ambiental más fuerte para recuperar la visibilidad general que se perdió
+  const ambient = new THREE.AmbientLight(0xffffff, 1.0);
   scene.add(ambient);
+
+  // Luz de rebote sutil para que el techo y suelo no se vean negros
+  const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.4);
+  scene.add(hemiLight);
+
+  // Luz tenue central para iluminar sutilmente la sala entera
+  centerLight = new THREE.PointLight(0x5555bb, 0.6, 500);
+  centerLight.position.set(-150, 40, 20);
+  scene.add(centerLight);
 
   // Suelo
   const loader = new THREE.TextureLoader();
   const floorTex = loader.load("recursos/imagenes/suelo3.jpg");
   floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
   floorTex.repeat.set(15, 10);
-  const floor = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), new THREE.MeshBasicMaterial({ map: floorTex, side: THREE.DoubleSide }));
+  const floorMat = new THREE.MeshStandardMaterial({
+    map: floorTex,
+    side: THREE.DoubleSide,
+    roughness: 0.8,
+    bumpMap: floorTex,
+    bumpScale: 0.05
+  });
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), floorMat);
+  floor.receiveShadow = true;
   floor.position.y = -40;
   floor.rotation.x = Math.PI / 2;
   scene.add(floor);
@@ -223,7 +251,13 @@ function drawRoom() {
   const ceilTex = loader.load("recursos/imagenes/cielo.jpg");
   ceilTex.wrapS = ceilTex.wrapT = THREE.RepeatWrapping;
   ceilTex.repeat.set(40, 40);
-  const ceil = new THREE.Mesh(new THREE.PlaneGeometry(1050, 1000), new THREE.MeshBasicMaterial({ map: ceilTex, side: THREE.DoubleSide }));
+  const ceilMat = new THREE.MeshStandardMaterial({
+    map: ceilTex,
+    side: THREE.DoubleSide,
+    roughness: 0.9
+  });
+  const ceil = new THREE.Mesh(new THREE.PlaneGeometry(1050, 1000), ceilMat);
+  ceil.receiveShadow = true;
   ceil.position.y = 47;
   ceil.rotation.x = Math.PI / 2;
   scene.add(ceil);
@@ -232,28 +266,32 @@ function drawRoom() {
   const wallTex = loader.load("recursos/imagenes/pared1.jpg");
   const wallTex3 = loader.load("recursos/imagenes/pared3.jpg");
   // La pared frontal la ponemos en negro puro para que el logo JPG se funda perfectamente
-  const wallMatFront = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
-  const wallMat = new THREE.MeshBasicMaterial({ map: wallTex, side: THREE.DoubleSide });
-  const wallMat3 = new THREE.MeshBasicMaterial({ map: wallTex3, side: THREE.DoubleSide });
+  const wallMatFront = new THREE.MeshStandardMaterial({ color: 0x000000, side: THREE.DoubleSide, roughness: 0.9 });
+  const wallMat = new THREE.MeshStandardMaterial({ map: wallTex, side: THREE.DoubleSide, roughness: 0.9, bumpMap: wallTex, bumpScale: 0.02 });
+  const wallMat3 = new THREE.MeshStandardMaterial({ map: wallTex3, side: THREE.DoubleSide, roughness: 0.9, bumpMap: wallTex3, bumpScale: 0.02 });
 
   const wallGeom = new THREE.PlaneGeometry(600, 90);
 
   const wallFront = new THREE.Mesh(wallGeom, wallMatFront);
   wallFront.position.set(-150, 5, -230);
+  wallFront.receiveShadow = true;
   scene.add(wallFront);
 
   const wallBack = new THREE.Mesh(wallGeom, wallMat);
   wallBack.position.set(-150, 5, 270);
+  wallBack.receiveShadow = true;
   scene.add(wallBack);
 
   const wallRight = new THREE.Mesh(wallGeom, wallMat);
   wallRight.position.set(-370, 5, 0);
   wallRight.rotation.y = Math.PI / 2;
+  wallRight.receiveShadow = true;
   scene.add(wallRight);
 
   const wallLeft = new THREE.Mesh(wallGeom, wallMat3);
   wallLeft.position.set(50, 5, 0);
   wallLeft.rotation.y = Math.PI / 2;
+  wallLeft.receiveShadow = true;
   scene.add(wallLeft);
 }
 
@@ -261,6 +299,11 @@ function renderRoom() {
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
+
+  // Sombras y mapeo de color
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
   container.appendChild(renderer.domElement);
 
   requestAnimationFrame(animate);
@@ -272,22 +315,67 @@ function renderRoom() {
 }
 
 // --- Sistema de Arte ---
+const textureLoader = new THREE.TextureLoader();
+
 function addArt(width, x, z, rotation, texturePath, audioPath, description) {
-  const tex = THREE.ImageUtils.loadTexture(texturePath);
-  const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true });
-  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(width, 30), mat);
+  const tex = textureLoader.load(texturePath);
 
-  // Aseguramos que la imagen esté un poco más separada de la pared para evitar parpadeos
+  // Identificar si es un texto (Logos, Títulos) o una pintura
+  const isFlat = texturePath.includes("Titulo") || texturePath.includes("Logo") || texturePath.includes("descripcion");
+
+  let mesh;
+  let finalX = x;
   let finalZ = z;
-  if (z === -229) finalZ = -228.0; // Front wall offset
-  if (z === 269) finalZ = 268.0;   // Back wall offset
 
-  mesh.position.set(x, 0, finalZ);
+  if (isFlat) {
+    // Los textos no deben tener profundidad ni verse afectados por la oscuridad total
+    const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.DoubleSide });
+    mesh = new THREE.Mesh(new THREE.PlaneGeometry(width, 30), mat);
+
+    // Separación milimétrica para evitar parpadeos con la pared
+    if (Math.abs(rotation) < 0.1) finalZ += 0.5;
+    else if (Math.abs(rotation - Math.PI) < 0.1 || Math.abs(rotation + Math.PI) < 0.1) finalZ -= 0.5;
+    else if (Math.abs(rotation - Math.PI / 2) < 0.1) finalX += 0.5;
+    else if (Math.abs(rotation + Math.PI / 2) < 0.1) finalX -= 0.5;
+  } else {
+    // Es una pintura/foto normal
+    // Mantendremos solo el plano de la imagen para que mantenga sus bordes blancos originales (si los tiene) y no se vea bloqueado
+    const imgMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true });
+    mesh = new THREE.Mesh(new THREE.PlaneGeometry(width, 30), imgMat);
+
+    // Desplazar sutilmente para evitar Z-fighting con la pared
+    const offset = 1;
+    if (Math.abs(rotation) < 0.1) finalZ += offset;
+    else if (Math.abs(rotation - Math.PI) < 0.1 || Math.abs(rotation + Math.PI) < 0.1) finalZ -= offset;
+    else if (Math.abs(rotation - Math.PI / 2) < 0.1) finalX += offset;
+    else if (Math.abs(rotation + Math.PI / 2) < 0.1) finalX -= offset;
+
+    mesh.position.set(finalX, 0, finalZ);
+  }
+
+  mesh.position.set(mesh.position.x || finalX, 0, mesh.position.z || finalZ);
   mesh.rotation.y = rotation;
   mesh.userData = [audioPath, description];
 
   scene.add(mesh);
   objects.push(mesh);
+
+  // Añadir un Spotlight SÓLO para cuadros de arte, no para textos
+  if (!isFlat) {
+    const dirX = Math.sin(rotation);
+    const dirZ = Math.cos(rotation);
+
+    // Luz focal, aumento de intensidad para recuperar luz de la pared
+    const spotLight = new THREE.SpotLight(0xfff5e6, 1.2); // Intensidad devuelta
+    spotLight.position.set(finalX + dirX * 40, 25, finalZ + dirZ * 40);
+    spotLight.target = mesh;
+    spotLight.angle = Math.PI / 4;
+    spotLight.penumbra = 0.8;
+    spotLight.decay = 2;
+    spotLight.distance = 180;
+    spotLight.castShadow = false;
+    scene.add(spotLight);
+  }
 }
 
 // Aliases para compatibilidad con galeria.html
