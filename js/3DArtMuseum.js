@@ -213,8 +213,8 @@ function drawRoom() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x000000);
 
-  // Agregar niebla (Fog) Lineal: Deja el frente 100% nítido y esconde sólo lo que está más lejos de 250 bloques
-  scene.fog = new THREE.Fog(0x000000, 200, 600);
+  // Agregar niebla (Fog) Lineal: Término medio. Empieza a los 350 (no ensucia las paredes cercanas) y termina a los 900 (borra el fondo del pasillo).
+  scene.fog = new THREE.Fog(0x000000, 350, 900);
 
   // Luz ambiental más fuerte para recuperar la visibilidad general que se perdió
   const ambient = new THREE.AmbientLight(0xffffff, 1.0);
@@ -229,17 +229,17 @@ function drawRoom() {
   centerLight.position.set(-150, 40, 20);
   scene.add(centerLight);
 
-  // Suelo
+  // Suelo (Parquet de Mansión Embrujada)
   const loader = new THREE.TextureLoader();
-  const floorTex = loader.load("recursos/imagenes/suelo3.jpg");
+  const floorTex = loader.load("recursos/imagenes/suelo_mans.png");
   floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
-  floorTex.repeat.set(15, 10);
+  floorTex.repeat.set(30, 20); // Doblamos la cantidad de baldosas para que no se vean enormes
   const floorMat = new THREE.MeshStandardMaterial({
     map: floorTex,
     side: THREE.DoubleSide,
-    roughness: 0.8,
+    roughness: 0.9,
     bumpMap: floorTex,
-    bumpScale: 0.05
+    bumpScale: 0.03
   });
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), floorMat);
   floor.receiveShadow = true;
@@ -247,14 +247,18 @@ function drawRoom() {
   floor.rotation.x = Math.PI / 2;
   scene.add(floor);
 
-  // Techo
-  const ceilTex = loader.load("recursos/imagenes/cielo.jpg");
+  // Techo (Techo Clásico Viejo)
+  const ceilTex = loader.load("recursos/imagenes/techo_mans.png");
   ceilTex.wrapS = ceilTex.wrapT = THREE.RepeatWrapping;
-  ceilTex.repeat.set(40, 40);
+  ceilTex.repeat.set(12, 12); // Menos repeticiones para que no se note el cuadro (costura) y se vea natural
+
+  // Color natural, controlado por el Fog lejano y la luz ambiente
   const ceilMat = new THREE.MeshStandardMaterial({
     map: ceilTex,
     side: THREE.DoubleSide,
-    roughness: 0.9
+    roughness: 1.0,
+    bumpMap: ceilTex,
+    bumpScale: 0.05
   });
   const ceil = new THREE.Mesh(new THREE.PlaneGeometry(1050, 1000), ceilMat);
   ceil.receiveShadow = true;
@@ -262,13 +266,15 @@ function drawRoom() {
   ceil.rotation.x = Math.PI / 2;
   scene.add(ceil);
 
-  // Paredes
-  const wallTex = loader.load("recursos/imagenes/pared1.jpg");
-  const wallTex3 = loader.load("recursos/imagenes/pared3.jpg");
-  // La pared frontal la ponemos en negro puro para que el logo JPG se funda perfectamente
-  const wallMatFront = new THREE.MeshStandardMaterial({ color: 0x000000, side: THREE.DoubleSide, roughness: 0.9 });
-  const wallMat = new THREE.MeshStandardMaterial({ map: wallTex, side: THREE.DoubleSide, roughness: 0.9, bumpMap: wallTex, bumpScale: 0.02 });
-  const wallMat3 = new THREE.MeshStandardMaterial({ map: wallTex3, side: THREE.DoubleSide, roughness: 0.9, bumpMap: wallTex3, bumpScale: 0.02 });
+  // Paredes (Papel Tapiz Damask Negro)
+  const wallTex = loader.load("recursos/imagenes/pared_mans.png");
+  wallTex.wrapS = wallTex.wrapT = THREE.RepeatWrapping;
+  wallTex.repeat.set(15, 3); // Repetir patrón victoriano a lo ancho y largo de pasillos
+
+  // La pared frontal mantiene base negra pero con el mapa Damask para dar textura ultra sutil
+  const wallMatFront = new THREE.MeshStandardMaterial({ color: 0x111111, map: wallTex, side: THREE.DoubleSide, roughness: 0.9 });
+  const wallMat = new THREE.MeshStandardMaterial({ map: wallTex, side: THREE.DoubleSide, roughness: 0.9 });
+  const wallMat3 = wallMat; // Unificado porque comparten estética victoriana oscura
 
   const wallGeom = new THREE.PlaneGeometry(600, 90);
 
